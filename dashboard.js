@@ -370,3 +370,377 @@ function aturPanel(tombolBuka, panel, tombolTutup) {
 
 aturPanel("buka-catatan", "panel-catatan", "tutup-catatan");
 aturPanel("buka-tugas", "panel-tugas", "tutup-tugas");
+
+
+
+// ==========================
+// JAM DAN TANGGAL
+// ==========================
+
+const jam = document.querySelector(".clock h2");
+const tanggal = document.querySelector(".clock p");
+
+function updateClock() {
+  const sekarang = new Date();
+
+  jam.textContent = sekarang.toLocaleTimeString("id-ID", {
+    hour: "2-digit",
+    minute: "2-digit"
+  });
+
+  tanggal.textContent = sekarang.toLocaleDateString("id-ID", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    year: "numeric"
+  });
+}
+
+updateClock();
+setInterval(updateClock, 1000);
+
+
+// ==========================
+// LOKASI GPS
+// ==========================
+
+navigator.geolocation.getCurrentPosition(
+
+  async function(posisi) {
+
+    const latitude = posisi.coords.latitude;
+    const longitude = posisi.coords.longitude;
+
+    // MENCARI ALAMAT
+    try {
+
+      const url = `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`;
+
+      const response = await fetch(url);
+      const data = await response.json();
+
+      const alamat = data.address || {};
+
+      const jalan =
+        alamat.road ||
+        alamat.pedestrian ||
+        "Jalan tidak diketahui";
+
+      const kelurahan =
+        alamat.suburb ||
+        alamat.village ||
+        "Kelurahan tidak diketahui";
+
+      const kecamatan =
+        alamat.city_district ||
+        alamat.subdistrict ||
+        "Kecamatan tidak diketahui";
+
+      const kota =
+        alamat.city ||
+        alamat.town ||
+        alamat.county ||
+        "Kota tidak diketahui";
+
+      document.getElementById("lokasi").innerHTML = `
+        ${jalan}<br>
+        Kelurahan: ${kelurahan}<br>
+        Kecamatan: ${kecamatan}<br>
+        Kota: ${kota}
+      `;
+
+    } catch (error) {
+
+      console.log("Error lokasi:", error);
+
+      document.getElementById("lokasi").textContent =
+        "Gagal mengambil nama lokasi";
+
+    }
+
+
+    // ==========================
+    // API CUACA
+    // ==========================
+
+    try {
+
+      const urlCuaca = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&timezone=auto`;
+
+      const responseCuaca = await fetch(urlCuaca);
+      const dataCuaca = await responseCuaca.json();
+
+      const cuaca = dataCuaca.current;
+
+      // SUHU
+      document.getElementById("suhu").textContent =
+        Math.round(cuaca.temperature_2m) + "°C";
+
+      // KELEMBAPAN DAN ANGIN
+      const kelembapan = cuaca.relative_humidity_2m;
+      const angin = cuaca.wind_speed_10m;
+
+      document.getElementById("kelembapan").textContent =
+        kelembapan + "%";
+
+      document.getElementById("angin").textContent =
+        angin + " km/jam";
+
+
+      // KONDISI CUACA
+      const kode = cuaca.weather_code;
+
+      let kondisi = "";
+      let ikon = "";
+
+      if (kode === 0) {
+        kondisi = "Cerah";
+        ikon = "☀️";
+
+      } else if (kode <= 3) {
+        kondisi = "Berawan";
+        ikon = "🌤️";
+
+      } else if (kode === 45 || kode === 48) {
+        kondisi = "Berkabut";
+        ikon = "🌫️";
+
+      } else if (kode >= 51 && kode <= 57) {
+        kondisi = "Gerimis";
+        ikon = "🌦️";
+
+      } else if (kode >= 61 && kode <= 67) {
+        kondisi = "Hujan";
+        ikon = "🌧️";
+
+      } else if (kode >= 71 && kode <= 77) {
+        kondisi = "Salju";
+        ikon = "❄️";
+
+      } else if (kode >= 80 && kode <= 82) {
+        kondisi = "Hujan";
+        ikon = "🌧️";
+
+      } else if (kode >= 85 && kode <= 86) {
+        kondisi = "Hujan salju";
+        ikon = "🌨️";
+
+      } else if (kode >= 95) {
+        kondisi = "Badai petir";
+        ikon = "⛈️";
+
+      } else {
+        kondisi = "Tidak diketahui";
+        ikon = "🌡️";
+      }
+
+
+      // MENAMPILKAN HASIL
+      document.getElementById("kondisi").textContent =
+        kondisi;
+
+      document.getElementById("ikon-cuaca").textContent =
+        ikon;
+
+      console.log("Data cuaca:", dataCuaca);
+
+    } catch (error) {
+
+      console.log("Error cuaca:", error);
+
+      document.getElementById("kondisi").textContent =
+        "Gagal mengambil data cuaca";
+
+    }
+
+  },
+
+
+  // ==========================
+  // ERROR GPS
+  // ==========================
+
+  function(error) {
+
+    console.log("Error GPS:", error.message);
+
+    document.getElementById("lokasi").textContent =
+      "Gagal mengambil lokasi";
+
+  }
+
+);
+
+
+
+// ==========================
+// FITUR CATATAN
+// ==========================
+
+const inputCatatan = document.getElementById("catatan-input");
+const tombolSimpan = document.getElementById("simpan-catatan");
+const statusCatatan = document.getElementById("status-catatan");
+
+// Mengambil catatan yang tersimpan
+inputCatatan.value =
+  localStorage.getItem("catatan-dashboard") || "";
+
+if (inputCatatan.value !== "") {
+  statusCatatan.textContent = "Catatan tersimpan";
+}
+
+// Menyimpan catatan
+tombolSimpan.addEventListener("click", function() {
+
+  const isiCatatan = inputCatatan.value;
+
+  localStorage.setItem("catatan-dashboard", isiCatatan);
+
+  statusCatatan.textContent = "Catatan berhasil disimpan";
+
+});
+
+
+// ==========================
+// FITUR TO-DO LIST
+// ==========================
+
+const inputTugas = document.getElementById("tugas-input");
+const tombolTambah = document.getElementById("tambah-tugas");
+const daftarTugas = document.getElementById("daftar-tugas");
+
+// Mengambil tugas tersimpan
+let tugas = JSON.parse(
+  localStorage.getItem("daftar-tugas")
+) || [];
+
+
+// Menyimpan tugas ke localStorage
+function simpanTugas() {
+  localStorage.setItem(
+    "daftar-tugas",
+    JSON.stringify(tugas)
+  );
+}
+
+
+// Menampilkan daftar tugas
+function tampilkanTugas() {
+
+  daftarTugas.innerHTML = "";
+
+  if (tugas.length === 0) {
+    daftarTugas.innerHTML =
+      '<li class="tugas-kosong">Belum ada tugas.</li>';
+    return;
+  }
+
+  tugas.forEach(function(item, index) {
+
+    const li = document.createElement("li");
+    li.className = "item-tugas";
+
+    if (item.selesai) {
+      li.classList.add("selesai");
+    }
+
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.checked = item.selesai;
+
+    const teks = document.createElement("span");
+    teks.textContent = item.nama;
+
+    const tombolHapus = document.createElement("button");
+    tombolHapus.className = "hapus-tugas";
+    tombolHapus.textContent = "×";
+    tombolHapus.type = "button";
+
+    // Menandai tugas selesai
+    checkbox.addEventListener("change", function() {
+      tugas[index].selesai = checkbox.checked;
+
+      simpanTugas();
+      tampilkanTugas();
+    });
+
+    // Menghapus tugas
+    tombolHapus.addEventListener("click", function() {
+      tugas.splice(index, 1);
+
+      simpanTugas();
+      tampilkanTugas();
+    });
+
+    li.append(checkbox, teks, tombolHapus);
+    daftarTugas.appendChild(li);
+
+  });
+
+}
+
+
+// Menambahkan tugas
+function tambahTugas() {
+
+  const namaTugas = inputTugas.value.trim();
+
+  if (namaTugas === "") {
+    return;
+  }
+
+  tugas.push({
+    nama: namaTugas,
+    selesai: false
+  });
+
+  simpanTugas();
+  tampilkanTugas();
+
+  inputTugas.value = "";
+  inputTugas.focus();
+
+}
+
+
+// Tombol tambah
+tombolTambah.addEventListener("click", tambahTugas);
+
+
+// Bisa menambahkan tugas dengan tombol Enter
+inputTugas.addEventListener("keydown", function(event) {
+
+  if (event.key === "Enter") {
+    tambahTugas();
+  }
+
+});
+
+
+// Tampilkan tugas saat halaman dibuka
+tampilkanTugas();
+
+
+// ==========================
+// PANEL BUKA TUTUP
+// ==========================
+
+function aturPanel(tombolBuka, panel, tombolTutup) {
+  const buka = document.getElementById(tombolBuka);
+  const isi = document.getElementById(panel);
+  const tutup = document.getElementById(tombolTutup);
+
+  buka.addEventListener("click", function() {
+    isi.hidden = !isi.hidden;
+    buka.querySelector("span").textContent =
+      isi.hidden ? "+" : "−";
+  });
+
+  tutup.addEventListener("click", function() {
+    isi.hidden = true;
+    buka.querySelector("span").textContent = "+";
+  });
+}
+
+aturPanel("buka-catatan", "panel-catatan", "tutup-catatan");
+aturPanel("buka-tugas", "panel-tugas", "tutup-tugas");
