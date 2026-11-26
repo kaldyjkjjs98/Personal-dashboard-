@@ -210,18 +210,40 @@ header {
 
 #buka-catatan,
 #buka-tugas {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  -webkit-tap-highlight-color: transparent !important;
   display: flex;
   align-items: center;
   gap: 12px;
-  background: transparent;
-  border: none;
-  color: white;
-  font-family: inherit;
+  background: transparent !important;
+  color: #FFFFFF !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  font-family: Arial, sans-serif !important;
   font-size: 22px;
   font-weight: bold;
   cursor: pointer;
   transition: 0.3s ease;
-  padding: 0;
+  padding: 0 !important;
+  text-align: left;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+#buka-catatan:hover,
+#buka-tugas:hover {
+  color: #FF9A00 !important;
+}
+
+#buka-catatan:focus,
+#buka-tugas:focus,
+#buka-catatan:focus-visible,
+#buka-tugas:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
 }
 
 #buka-catatan span,
@@ -232,23 +254,19 @@ header {
   flex-shrink: 0;
   width: 30px;
   height: 30px;
-  color: #FF9A00;
-  border: 1px solid rgba(255,154,0,0.3);
+  background: transparent !important;
+  color: #FF9A00 !important;
+  border: 1px solid rgba(255,154,0,0.3) !important;
   border-radius: 50%;
   font-size: 17px;
   transition: 0.3s ease;
 }
 
-#buka-catatan:hover,
-#buka-tugas:hover {
-  color: #FF9A00;
-}
-
 #buka-catatan:active span,
 #buka-tugas:active span {
-  background: #FF9A00;
-  color: #0B0B0B;
-  box-shadow: 0 0 15px rgba(255,154,0,0.4);
+  background: #FF9A00 !important;
+  color: #0B0B0B !important;
+  box-shadow: 0 0 15px rgba(255,154,0,0.4) !important;
   transform: scale(0.9);
 }
 
@@ -436,6 +454,8 @@ footer span {
   text-shadow: 0 0 8px #FF9A00;
 }
 
+/* ANIMASI */
+
 @keyframes goyangCuaca {
   0%, 100% {
     transform: translateY(0);
@@ -467,6 +487,8 @@ footer span {
     transform: translateY(0);
   }
 }
+
+/* RESPONSIVE */
 
 @media (max-width: 480px) {
   body {
@@ -521,60 +543,3 @@ footer span {
   }
   }
   
-
-#buka-catatan,
-#buka-tugas {
-  appearance: none !important;
-  -webkit-appearance: none !important;
-  background: transparent !important;
-  background-color: transparent !important;
-  color: #FFFFFF !important;
-  border: none !important;
-  outline: none;
-  box-shadow: none;
-  font-family: Arial, sans-serif !important;
-  font-size: 22px !important;
-  font-weight: bold !important;
-  padding: 0 !important;
-  text-align: left;
-}
-
-#buka-catatan span,
-#buka-tugas span {
-  appearance: none !important;
-  -webkit-appearance: none !important;
-  background: transparent !important;
-  background-color: transparent !important;
-  color: #FF9A00 !important;
-  border: 1px solid rgba(255,154,0,0.3) !important;
-  border-radius: 50% !important;
-}
-
-#buka-catatan:hover,
-#buka-tugas:hover {
-  color: #FF9A00 !important;
-}
-
-#buka-catatan:active span,
-#buka-tugas:active span {
-  background: #FF9A00 !important;
-  color: #0B0B0B !important;
-    }
-
-
-#buka-catatan,
-#buka-tugas {
-  outline: none !important;
-  -webkit-tap-highlight-color: transparent !important;
-}
-
-#buka-catatan:focus,
-#buka-tugas:focus,
-#buka-catatan:focus-visible,
-#buka-tugas:focus-visible,
-#buka-catatan:active,
-#buka-tugas:active {
-  outline: none !important;
-  box-shadow: none !important;
-  background: transparent !important;
-}
