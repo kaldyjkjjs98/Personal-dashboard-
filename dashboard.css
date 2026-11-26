@@ -1,0 +1,481 @@
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #0B0B0B;
+  color: #FFFFFF;
+  font-family: Arial, sans-serif;
+  min-height: 100vh;
+  padding: 25px 20px;
+}
+
+.dashboard {
+  max-width: 850px;
+  width: 100%;
+  margin: auto;
+}
+
+/* HEADER */
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 45px;
+}
+
+.brand h1 {
+  font-size: 26px;
+  letter-spacing: -1px;
+}
+
+.brand h1 span {
+  color: #FF9A00;
+}
+
+.brand p {
+  color: #777;
+  font-size: 10px;
+  letter-spacing: 2px;
+  margin-top: 5px;
+}
+
+.status {
+  font-size: 10px;
+  color: #999;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.status span {
+  width: 7px;
+  height: 7px;
+  background: #FF9A00;
+  border-radius: 50%;
+  box-shadow: 0 0 10px #FF9A00;
+}
+
+/* CLOCK */
+
+.clock {
+  padding-bottom: 30px;
+  border-bottom: 1px solid #292929;
+  margin-bottom: 30px;
+  background: transparent;
+}
+
+.clock h2 {
+  font-size: clamp(58px, 12vw, 82px);
+  font-weight: 700;
+  letter-spacing: -4px;
+}
+
+.clock p {
+  color: #FF9A00;
+  font-size: 12px;
+  letter-spacing: 1px;
+  margin-top: 8px;
+}
+
+/* WEATHER */
+
+.weather {
+  background: #151515;
+  border: 1px solid #292929;
+  border-radius: 18px;
+  padding: 25px;
+  margin-bottom: 15px;
+  overflow: hidden;
+}
+
+.weather-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.weather-heading h2 {
+  color: #FF9A00;
+  font-size: 11px;
+  letter-spacing: 2px;
+}
+
+.weather-heading span {
+  color: #777;
+  font-size: 10px;
+}
+
+.weather-info {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+}
+
+.weather-icon {
+  width: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#ikon-cuaca {
+  font-size: 65px;
+  display: inline-block;
+  animation: goyangCuaca 5s infinite ease-in-out,
+             glowCuaca 4s infinite ease-in-out;
+}
+
+.weather-detail h3 {
+  font-size: 52px;
+  letter-spacing: -2px;
+}
+
+.weather-detail p {
+  font-size: 13px;
+  margin-top: 7px;
+  line-height: 1.5;
+  color: #999;
+}
+
+#kondisi {
+  color: #FF9A00;
+}
+
+#lokasi {
+  color: #888;
+}
+
+/* WEATHER EXTRA */
+
+.weather-extra {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 35px;
+}
+
+.extra-item {
+  padding: 20px;
+  background: #151515;
+  border: 1px solid #252525;
+  border-radius: 12px;
+}
+
+.extra-item span {
+  color: #777;
+  font-size: 10px;
+  letter-spacing: 1px;
+}
+
+.extra-item h3 {
+  font-size: 22px;
+  margin-top: 10px;
+}
+
+/* NOTES & TASKS */
+
+.notes,
+.taks {
+  padding: 22px 5px;
+  border-bottom: 1px solid #292929;
+  transition: 0.3s ease;
+}
+
+.section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.section-number {
+  color: #FF9A00;
+  font-size: 10px;
+  letter-spacing: 1px;
+}
+
+.section-heading h2 {
+  font-size: 20px;
+  margin-top: 8px;
+}
+
+.arrow {
+  color: #FF9A00;
+  font-size: 22px;
+}
+
+.notes > p,
+.taks > p {
+  color: #777;
+  font-size: 13px;
+  margin-top: 12px;
+}
+
+.notes:active,
+.taks:active {
+  transform: translateX(4px);
+}
+
+/* FOOTER */
+
+footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 40px;
+  padding: 20px 0;
+  border-top: 1px solid #292929;
+  color: #555;
+  font-size: 9px;
+  letter-spacing: 1px;
+}
+
+/* ANIMATION */
+
+@keyframes goyangCuaca {
+  0%, 100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-2px);
+  }
+}
+
+@keyframes glowCuaca {
+  0%, 100% {
+    filter: drop-shadow(0 0 8px rgba(255,154,0,0.35));
+  }
+
+  50% {
+    filter: drop-shadow(0 0 22px rgba(255,154,0,0.8));
+  }
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 480px) {
+  body {
+    padding: 20px 16px;
+  }
+
+  header {
+    margin-bottom: 35px;
+  }
+
+  .weather {
+    padding: 20px;
+  }
+
+  .weather-info {
+    gap: 12px;
+  }
+
+  .weather-icon {
+    width: 75px;
+  }
+
+  #ikon-cuaca {
+    font-size: 55px;
+  }
+
+  .weather-detail h3 {
+    font-size: 42px;
+  }
+
+  .extra-item {
+    padding: 15px;
+  }
+
+  .extra-item h3 {
+    font-size: 19px;
+  }
+}
+
+
+/* CATATAN */
+
+#catatan-input {
+  width: 100%;
+  min-height: 120px;
+  resize: vertical;
+  margin-top: 20px;
+  padding: 15px;
+  background: #151515;
+  border: 1px solid #303030;
+  border-radius: 12px;
+  color: white;
+  font-family: inherit;
+  font-size: 14px;
+  outline: none;
+  transition: border 0.3s ease, box-shadow 0.3s ease;
+}
+
+#catatan-input:focus {
+  border-color: #FF9A00;
+  box-shadow: 0 0 12px rgba(255,154,0,0.12);
+}
+
+#simpan-catatan {
+  margin-top: 12px;
+  padding: 12px 18px;
+  background: #FF9A00;
+  color: #111;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+#simpan-catatan:active,
+#tambah-tugas:active {
+  transform: scale(0.95);
+}
+
+#status-catatan {
+  margin-top: 10px;
+  font-size: 11px;
+  color: #888;
+}
+
+
+/* TO-DO LIST */
+
+.todo-input {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+#tugas-input {
+  flex: 1;
+  min-width: 0;
+  padding: 13px;
+  background: #151515;
+  border: 1px solid #303030;
+  border-radius: 9px;
+  color: white;
+  outline: none;
+}
+
+#tugas-input:focus {
+  border-color: #FF9A00;
+}
+
+#tambah-tugas {
+  width: 45px;
+  border: none;
+  border-radius: 9px;
+  background: #FF9A00;
+  color: #111;
+  font-size: 25px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+#daftar-tugas {
+  list-style: none;
+  margin-top: 18px;
+}
+
+.item-tugas {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 5px;
+  border-bottom: 1px solid #292929;
+}
+
+.item-tugas input {
+  accent-color: #FF9A00;
+  width: 17px;
+  height: 17px;
+}
+
+.item-tugas span {
+  flex: 1;
+  min-width: 0;
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+
+.item-tugas.selesai span {
+  color: #666;
+  text-decoration: line-through;
+}
+
+.hapus-tugas {
+  background: transparent;
+  border: none;
+  color: #FF9A00;
+  font-size: 18px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.tugas-kosong {
+  color: #777;
+  font-size: 12px;
+  padding: 12px 5px;
+}
+
+
+/* PANEL BUKA TUTUP */
+
+.section-heading h2 {
+  cursor: pointer;
+  display: inline-block;
+  transition: 0.3s ease;
+}
+
+.section-heading h2:hover {
+  color: #FF9A00;
+}
+
+.section-heading h2 span {
+  color: #FF9A00;
+  margin-left: 8px;
+  font-size: 17px;
+}
+
+.panel[hidden] {
+  display: none;
+}
+
+.panel {
+  position: relative;
+  margin-top: 20px;
+  animation: panelMasuk 0.3s ease;
+}
+
+@keyframes panelMasuk {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.tutup-panel {
+  display: block;
+  margin-left: auto;
+  background: transparent;
+  border: none;
+  color: #FF9A00;
+  font-size: 27px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.tutup-panel:active {
+  transform: rotate(90deg) scale(0.85);
+}
