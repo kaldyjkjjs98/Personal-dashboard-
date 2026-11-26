@@ -521,3 +521,42 @@ footer span {
   }
   }
   
+
+#buka-catatan,
+#buka-tugas {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  color: #FFFFFF !important;
+  border: none !important;
+  outline: none;
+  box-shadow: none;
+  font-family: Arial, sans-serif !important;
+  font-size: 22px !important;
+  font-weight: bold !important;
+  padding: 0 !important;
+  text-align: left;
+}
+
+#buka-catatan span,
+#buka-tugas span {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  color: #FF9A00 !important;
+  border: 1px solid rgba(255,154,0,0.3) !important;
+  border-radius: 50% !important;
+}
+
+#buka-catatan:hover,
+#buka-tugas:hover {
+  color: #FF9A00 !important;
+}
+
+#buka-catatan:active span,
+#buka-tugas:active span {
+  background: #FF9A00 !important;
+  color: #0B0B0B !important;
+    }
