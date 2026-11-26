@@ -560,3 +560,18 @@ footer span {
   background: #FF9A00 !important;
   color: #0B0B0B !important;
     }
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button,
+input,
+textarea,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:focus {
+  outline: none;
+}
