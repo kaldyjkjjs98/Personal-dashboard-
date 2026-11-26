@@ -1,5 +1,5 @@
 
-const CACHE_NAME = "kaldys-dashboard-v1";
+const CACHE_NAME = "kaldys-dashboard-v2";
 
 const FILES_TO_CACHE = [
   "/",
@@ -11,7 +11,6 @@ const FILES_TO_CACHE = [
   "/icon-512.png"
 ];
 
-// Memasang cache
 self.addEventListener("install", function(event) {
   event.waitUntil(
     caches.open(CACHE_NAME).then(function(cache) {
@@ -22,7 +21,6 @@ self.addEventListener("install", function(event) {
   self.skipWaiting();
 });
 
-// Mengaktifkan service worker
 self.addEventListener("activate", function(event) {
   event.waitUntil(
     caches.keys().then(function(names) {
@@ -41,7 +39,6 @@ self.addEventListener("activate", function(event) {
   self.clients.claim();
 });
 
-// Mengambil file dari cache jika tersedia
 self.addEventListener("fetch", function(event) {
   if (event.request.method !== "GET") return;
 
@@ -55,4 +52,3 @@ self.addEventListener("fetch", function(event) {
     })
   );
 });
-               
