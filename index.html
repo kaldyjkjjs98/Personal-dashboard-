@@ -7,7 +7,6 @@
   <link rel="manifest" href="/manifest.json">
   <meta name="theme-color" content="#FF9A00">
   <link rel="stylesheet" href="dashboard.css">
-
   <title>Personal Dashboard</title>
 </head>
 
@@ -15,7 +14,6 @@
 
   <div class="dashboard">
 
-    <!-- HEADER -->
     <header>
       <div class="brand">
         <h1>kaldys<span>.</span></h1>
@@ -28,17 +26,13 @@
       </div>
     </header>
 
-
     <main>
 
-      <!-- CLOCK -->
       <section class="clock">
         <h2>00:00</h2>
         <p>Memuat tanggal...</p>
       </section>
 
-
-      <!-- WEATHER -->
       <section class="weather">
 
         <div class="weather-heading">
@@ -62,8 +56,6 @@
 
       </section>
 
-
-      <!-- QUICK INFORMATION -->
       <section class="weather-extra">
 
         <div class="extra-item">
@@ -77,49 +69,57 @@
         </div>
 
       </section>
-     
 
-<!-- CATATAN -->
-<section class="notes">
-  <div class="section-heading">
-    <div>
-      <span class="section-number">01 / PERSONAL</span>
-      <h2 id="buka-catatan">Catatan <span>+</span></h2>
-    </div>
-  </div>
+      <section class="notes">
 
-  <div class="panel" id="panel-catatan" hidden>
-    <button class="tutup-panel" id="tutup-catatan">×</button>
-    <textarea id="catatan-input" placeholder="Tulis sesuatu di sini..."></textarea>
-    <button id="simpan-catatan">Simpan catatan</button>
-    <p id="status-catatan">Belum ada perubahan</p>
-  </div>
-</section>
+        <div class="section-heading">
+          <div>
+            <span class="section-number">01 / PERSONAL</span>
+            <h2>
+              <button id="buka-catatan" type="button">
+                Catatan <span>+</span>
+              </button>
+            </h2>
+          </div>
+        </div>
 
-<!-- TO DO LIST -->
-<section class="taks">
-  <div class="section-heading">
-    <div>
-      <span class="section-number">02 / ACTIVITY</span>
-      <h2 id="buka-tugas">To-do-list <span>+</span></h2>
-    </div>
-  </div>
+        <div class="panel" id="panel-catatan" hidden>
+          <button class="tutup-panel" id="tutup-catatan" type="button">×</button>
+          <textarea id="catatan-input" placeholder="Tulis sesuatu di sini..."></textarea>
+          <button id="simpan-catatan" type="button">Simpan catatan</button>
+          <p id="status-catatan">Belum ada perubahan</p>
+        </div>
 
-  <div class="panel" id="panel-tugas" hidden>
-    <button class="tutup-panel" id="tutup-tugas">×</button>
-    <div class="todo-input">
-      <input type="text" id="tugas-input" placeholder="Tambahkan tugas...">
-      <button id="tambah-tugas">+</button>
-    </div>
-    <ul id="daftar-tugas"></ul>
-  </div>
-</section>
+      </section>
 
+      <section class="taks">
+
+        <div class="section-heading">
+          <div>
+            <span class="section-number">02 / ACTIVITY</span>
+            <h2>
+              <button id="buka-tugas" type="button">
+                To-do-list <span>+</span>
+              </button>
+            </h2>
+          </div>
+        </div>
+
+        <div class="panel" id="panel-tugas" hidden>
+          <button class="tutup-panel" id="tutup-tugas" type="button">×</button>
+
+          <div class="todo-input">
+            <input type="text" id="tugas-input" placeholder="Tambahkan tugas...">
+            <button id="tambah-tugas" type="button">+</button>
+          </div>
+
+          <ul id="daftar-tugas"></ul>
+        </div>
+
+      </section>
 
     </main>
 
-
-    <!-- FOOTER -->
     <footer>
       <p>PERSONAL DASHBOARD</p>
       <p>DESIGNED BY KALDYS © 2026</p>
@@ -130,4 +130,5 @@
   <script src="dashboard.js"></script>
 
 </body>
-</html>
+          </html>
+              
