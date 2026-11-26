@@ -170,6 +170,8 @@ header {
   margin-top: 10px;
 }
 
+/* PERSONAL DAN TO-DO */
+
 .notes,
 .taks {
   padding: 25px 15px;
@@ -186,6 +188,10 @@ header {
   align-items: center;
 }
 
+.section-heading > div {
+  width: 100%;
+}
+
 .section-number {
   display: inline-block;
   color: #FF9A00;
@@ -199,6 +205,7 @@ header {
 
 .section-heading h2 {
   margin-top: 12px;
+  font-size: 22px;
 }
 
 #buka-catatan,
@@ -214,6 +221,7 @@ header {
   font-weight: bold;
   cursor: pointer;
   transition: 0.3s ease;
+  padding: 0;
 }
 
 #buka-catatan span,
@@ -221,6 +229,7 @@ header {
   display: inline-flex;
   justify-content: center;
   align-items: center;
+  flex-shrink: 0;
   width: 30px;
   height: 30px;
   color: #FF9A00;
@@ -248,8 +257,10 @@ header {
   border-color: rgba(255,154,0,0.3);
 }
 
+/* PANEL CATATAN DAN TUGAS */
+
 .panel[hidden] {
-  display: none;
+  display: none !important;
 }
 
 .panel {
@@ -321,6 +332,7 @@ header {
 
 #tambah-tugas {
   width: 45px;
+  flex-shrink: 0;
   border: none;
   border-radius: 9px;
   background: #FF9A00;
@@ -508,4 +520,4 @@ footer span {
     letter-spacing: 0.5px;
   }
   }
-                   
+  
