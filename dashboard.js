@@ -744,3 +744,21 @@ function aturPanel(tombolBuka, panel, tombolTutup) {
 
 aturPanel("buka-catatan", "panel-catatan", "tutup-catatan");
 aturPanel("buka-tugas", "panel-tugas", "tutup-tugas");
+
+// ==========================
+// PWA SERVICE WORKER
+// ==========================
+
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", function() {
+
+    navigator.serviceWorker.register("/service-worker.js")
+      .then(function(registration) {
+        console.log("Service Worker aktif!", registration);
+      })
+      .catch(function(error) {
+        console.log("Service Worker gagal:", error);
+      });
+
+  });
+    }
