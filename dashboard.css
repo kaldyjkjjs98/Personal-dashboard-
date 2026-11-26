@@ -561,21 +561,20 @@ footer span {
   color: #0B0B0B !important;
     }
 
+
 #buka-catatan,
-#buka-tugas,
-#buka-catatan *,
-#buka-tugas * {
-  -webkit-tap-highlight-color: transparent !important;
-  -webkit-user-select: none !important;
-  user-select: none !important;
-  -webkit-touch-callout: none !important;
+#buka-tugas {
   outline: none !important;
+  -webkit-tap-highlight-color: transparent !important;
 }
 
 #buka-catatan:focus,
-#buka-tugas:focus {
-  background: transparent !important;
-  color: #FFFFFF !important;
+#buka-tugas:focus,
+#buka-catatan:focus-visible,
+#buka-tugas:focus-visible,
+#buka-catatan:active,
+#buka-tugas:active {
   outline: none !important;
   box-shadow: none !important;
+  background: transparent !important;
 }
