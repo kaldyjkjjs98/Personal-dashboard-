@@ -561,17 +561,21 @@ footer span {
   color: #0B0B0B !important;
     }
 
-* {
-  -webkit-tap-highlight-color: transparent;
+#buka-catatan,
+#buka-tugas,
+#buka-catatan *,
+#buka-tugas * {
+  -webkit-tap-highlight-color: transparent !important;
+  -webkit-user-select: none !important;
+  user-select: none !important;
+  -webkit-touch-callout: none !important;
+  outline: none !important;
 }
 
-button,
-input,
-textarea,
-a {
-  -webkit-tap-highlight-color: transparent;
-}
-
-button:focus {
-  outline: none;
+#buka-catatan:focus,
+#buka-tugas:focus {
+  background: transparent !important;
+  color: #FFFFFF !important;
+  outline: none !important;
+  box-shadow: none !important;
 }
