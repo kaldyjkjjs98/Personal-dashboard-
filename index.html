@@ -70,6 +70,8 @@
 
       </section>
 
+      <!-- CATATAN -->
+
       <section class="notes">
 
         <div class="section-heading">
@@ -84,13 +86,60 @@
         </div>
 
         <div class="panel" id="panel-catatan" hidden>
+
           <button class="tutup-panel" id="tutup-catatan" type="button">×</button>
-          <textarea id="catatan-input" placeholder="Tulis sesuatu di sini..."></textarea>
-          <button id="simpan-catatan" type="button">Simpan catatan</button>
+
+          <input
+            type="text"
+            id="judul-catatan"
+            placeholder="Judul catatan..."
+            maxlength="60"
+          >
+
+          <textarea
+            id="catatan-input"
+            placeholder="Tulis sesuatu di sini..."
+          ></textarea>
+
+          <input
+            type="file"
+            id="foto-catatan"
+            accept="image/*"
+            hidden
+          >
+
+          <div class="catatan-button-group">
+
+            <label for="foto-catatan" class="btn-upload">
+              UPLOAD FOTO
+            </label>
+
+            <button id="simpan-catatan" type="button">
+              SIMPAN
+            </button>
+
+          </div>
+
+          <div id="preview-foto"></div>
+
           <p id="status-catatan">Belum ada perubahan</p>
+
+          <div class="catatan-tersimpan">
+
+            <div class="catatan-list-heading">
+              <h3>Catatan tersimpan</h3>
+              <span id="jumlah-catatan">0</span>
+            </div>
+
+            <div id="daftar-catatan"></div>
+
+          </div>
+
         </div>
 
       </section>
+
+      <!-- TO DO LIST -->
 
       <section class="taks">
 
@@ -106,14 +155,21 @@
         </div>
 
         <div class="panel" id="panel-tugas" hidden>
+
           <button class="tutup-panel" id="tutup-tugas" type="button">×</button>
 
           <div class="todo-input">
-            <input type="text" id="tugas-input" placeholder="Tambahkan tugas...">
+            <input
+              type="text"
+              id="tugas-input"
+              placeholder="Tambahkan tugas..."
+            >
+
             <button id="tambah-tugas" type="button">+</button>
           </div>
 
           <ul id="daftar-tugas"></ul>
+
         </div>
 
       </section>
@@ -131,4 +187,4 @@
 
 </body>
           </html>
-              
+  
