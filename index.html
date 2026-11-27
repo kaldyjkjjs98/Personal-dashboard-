@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -54,6 +53,48 @@
 
         </div>
 
+        <div class="detail-lokasi-container">
+
+          <button
+            type="button"
+            id="detail-lokasi-toggle"
+            aria-expanded="false"
+          >
+            <span>DETAIL LOKASI</span>
+            <span id="panah-lokasi">⌄</span>
+          </button>
+
+          <div id="detail-lokasi" hidden>
+
+            <div class="lokasi-item">
+              <span>JALAN</span>
+              <p id="alamat-jalan">Memuat...</p>
+            </div>
+
+            <div class="lokasi-item">
+              <span>KELURAHAN</span>
+              <p id="alamat-kelurahan">Memuat...</p>
+            </div>
+
+            <div class="lokasi-item">
+              <span>KECAMATAN</span>
+              <p id="alamat-kecamatan">Memuat...</p>
+            </div>
+
+            <div class="lokasi-item">
+              <span>KOTA / KABUPATEN</span>
+              <p id="alamat-kota">Memuat...</p>
+            </div>
+
+            <div class="lokasi-item">
+              <span>KODE POS</span>
+              <p id="alamat-kodepos">Memuat...</p>
+            </div>
+
+          </div>
+
+        </div>
+
       </section>
 
       <section class="weather-extra">
@@ -69,8 +110,6 @@
         </div>
 
       </section>
-
-      <!-- CATATAN -->
 
       <section class="notes">
 
@@ -105,7 +144,7 @@
             type="file"
             id="foto-catatan"
             accept="image/*"
-            multiple 
+            multiple
             hidden
           >
 
@@ -139,8 +178,6 @@
         </div>
 
       </section>
-
-      <!-- TO DO LIST -->
 
       <section class="taks">
 
@@ -182,17 +219,14 @@
       <p>DESIGNED BY KALDYS © 2026</p>
     </footer>
 
+  </div>
 
-    <div id="foto-fullscreen" class="foto-modal">
-  <button id="tutup-foto-fullscreen" type="button">×</button>
-  <img id="foto-fullscreen-img" src="" alt="Foto catatan">
-</div>
-
-<script src="dashboard.js"></script>
+  <div id="foto-fullscreen" class="foto-modal">
+    <button id="tutup-foto-fullscreen" type="button">×</button>
+    <img id="foto-fullscreen-img" src="" alt="Foto catatan">
   </div>
 
   <script src="dashboard.js"></script>
 
 </body>
-          </html>
-  
+                                 </html>
