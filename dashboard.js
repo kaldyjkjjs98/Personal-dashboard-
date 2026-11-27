@@ -1,34 +1,131 @@
+// ==========================================
+// 0. CUSTOM MODAL (PENGGANTI ALERT & CONFIRM)
+// ==========================================
+const customModal = document.getElementById("custom-modal");
+const customModalTitle = document.getElementById("custom-modal-title");
+const customModalMessage = document.getElementById("custom-modal-message");
+const customModalButtons = document.getElementById("custom-modal-buttons");
 
+function showCustomAlert(pesan, judul = "Pemberitahuan") {
+  return new Promise((resolve) => {
+    if (!customModal) {
+      alert(pesan);
+      resolve();
+      return;
+    }
+
+    customModalTitle.textContent = judul;
+    customModalMessage.textContent = pesan;
+    customModalButtons.innerHTML = "";
+
+    const btnOke = document.createElement("button");
+    btnOke.className = "custom-modal-btn utama";
+    btnOke.textContent = "OKE";
+    btnOke.onclick = function() {
+      customModal.classList.remove("aktif");
+      resolve();
+    };
+
+    customModalButtons.appendChild(btnOke);
+    customModal.classList.add("aktif");
+  });
+}
+
+function showCustomConfirm(pesan, judul = "Konfirmasi") {
+  return new Promise((resolve) => {
+    if (!customModal) {
+      resolve(confirm(pesan));
+      return;
+    }
+
+    customModalTitle.textContent = judul;
+    customModalMessage.textContent = pesan;
+    customModalButtons.innerHTML = "";
+
+    const btnBatal = document.createElement("button");
+    btnBatal.className = "custom-modal-btn batal";
+    btnBatal.textContent = "BATAL";
+    btnBatal.onclick = function() {
+      customModal.classList.remove("aktif");
+      resolve(false);
+    };
+
+    const btnOke = document.createElement("button");
+    btnOke.className = "custom-modal-btn utama";
+    btnOke.textContent = "YA";
+    btnOke.onclick = function() {
+      customModal.classList.remove("aktif");
+      resolve(true);
+    };
+
+    customModalButtons.append(btnBatal, btnOke);
+    customModal.classList.add("aktif");
+  });
+}
+
+// ==========================================
+// 1. JAM DAN TANGGAL
+// ==========================================
 const jam = document.querySelector(".clock h2");
 const tanggal = document.querySelector(".clock p");
 
 function updateClock() {
   const sekarang = new Date();
-
-  jam.textContent = sekarang.toLocaleTimeString("id-ID", {
-    hour: "2-digit",
-    minute: "2-digit"
-  });
-
-  tanggal.textContent = sekarang.toLocaleDateString("id-ID", {
-    weekday: "long",
-    day: "numeric",
-    month: "long",
-    year: "numeric"
-  });
+  if (jam) {
+    jam.textContent = sekarang.toLocaleTimeString("id-ID", {
+      hour: "2-digit",
+      minute: "2-digit"
+    });
+  }
+  if (tanggal) {
+    tanggal.textContent = sekarang.toLocaleDateString("id-ID", {
+      weekday: "long",
+      day: "numeric",
+      month: "long",
+      year: "numeric"
+    });
+  }
 }
 
 updateClock();
 setInterval(updateClock, 1000);
 
+// ==========================================
+// 2. CUACA, LOKASI & DROPDOWN DETAIL LOKASI
+// ==========================================
 const lokasi = document.getElementById("lokasi");
 const suhu = document.getElementById("suhu");
 const kondisi = document.getElementById("kondisi");
 const ikonCuaca = document.getElementById("ikon-cuaca");
-const kelembapan = document.getElementById("kelembapan");
-const angin = document.getElementById("angin");
+const elemenHujan = document.getElementById("hujan");
+const elemenTekanan = document.getElementById("tekanan");
+
+const alamatJalan = document.getElementById("alamat-jalan");
+const alamatKelurahan = document.getElementById("alamat-kelurahan");
+const alamatKecamatan = document.getElementById("alamat-kecamatan");
+const alamatKota = document.getElementById("alamat-kota");
+const alamatKodepos = document.getElementById("alamat-kodepos");
+
+const tombolDetailLokasi = document.getElementById("detail-lokasi-toggle");
+const kontainerDetailLokasi = document.getElementById("detail-lokasi");
+
+if (tombolDetailLokasi && kontainerDetailLokasi) {
+  tombolDetailLokasi.addEventListener("click", function() {
+    const isHidden = kontainerDetailLokasi.hasAttribute("hidden");
+    if (isHidden) {
+      kontainerDetailLokasi.removeAttribute("hidden");
+      tombolDetailLokasi.classList.add("aktif");
+      tombolDetailLokasi.setAttribute("aria-expanded", "true");
+    } else {
+      kontainerDetailLokasi.setAttribute("hidden", "");
+      tombolDetailLokasi.classList.remove("aktif");
+      tombolDetailLokasi.setAttribute("aria-expanded", "false");
+    }
+  });
+}
 
 function tampilkanCuaca(kode) {
+  if (!kondisi || !ikonCuaca) return;
   if (kode === 0) {
     kondisi.textContent = "Cerah";
     ikonCuaca.textContent = "☀️";
@@ -61,25 +158,22 @@ function tampilkanCuaca(kode) {
 
 async function ambilCuaca(latitude, longitude) {
   try {
-    const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&timezone=auto`;
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,precipitation,surface_pressure,weather_code&timezone=auto`;
 
     const response = await fetch(url);
-
-    if (!response.ok) {
-      throw new Error("Gagal mengambil data cuaca");
-    }
+    if (!response.ok) throw new Error("Gagal mengambil data cuaca");
 
     const data = await response.json();
     const cuaca = data.current;
 
-    suhu.textContent = `${Math.round(cuaca.temperature_2m)}°C`;
-    kelembapan.textContent = `${cuaca.relative_humidity_2m}%`;
-    angin.textContent = `${cuaca.wind_speed_10m} km/jam`;
+    if (suhu) suhu.textContent = `${Math.round(cuaca.temperature_2m)}°C`;
+    if (elemenHujan) elemenHujan.textContent = `${cuaca.precipitation} mm`;
+    if (elemenTekanan) elemenTekanan.textContent = `${cuaca.surface_pressure} hPa`;
 
     tampilkanCuaca(cuaca.weather_code);
   } catch (error) {
-    kondisi.textContent = "Gagal memuat cuaca";
-    console.error(error);
+    if (kondisi) kondisi.textContent = "Gagal memuat cuaca";
+    console.error("Error cuaca:", error);
   }
 }
 
@@ -91,12 +185,10 @@ async function ambilLokasi(posisi) {
 
   try {
     const url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}`;
-
     const response = await fetch(url);
     const data = await response.json();
 
-    const alamat = data.address;
-
+    const alamat = data.address || {};
     const namaLokasi =
       alamat.suburb ||
       alamat.village ||
@@ -106,20 +198,21 @@ async function ambilLokasi(posisi) {
       alamat.city ||
       "Lokasi ditemukan";
 
-    const kota =
-      alamat.city ||
-      alamat.town ||
-      alamat.regency ||
-      alamat.county ||
-      "";
+    const kotaKab = alamat.city || alamat.town || alamat.regency || alamat.county || "";
 
-    lokasi.textContent = kota
-      ? `${namaLokasi}, ${kota}`
-      : namaLokasi;
+    if (lokasi) {
+      lokasi.textContent = kotaKab ? `${namaLokasi}, ${kotaKab}` : namaLokasi;
+    }
+
+    if (alamatJalan) alamatJalan.textContent = [alamat.road, alamat.house_number].filter(Boolean).join(" ") || "Tidak tersedia";
+    if (alamatKelurahan) alamatKelurahan.textContent = alamat.suburb || alamat.village || alamat.neighbourhood || "Tidak tersedia";
+    if (alamatKecamatan) alamatKecamatan.textContent = alamat.city_district || alamat.subdistrict || "Tidak tersedia";
+    if (alamatKota) alamatKota.textContent = kotaKab || "Tidak tersedia";
+    if (alamatKodepos) alamatKodepos.textContent = alamat.postcode || "Tidak tersedia";
 
   } catch (error) {
-    lokasi.textContent = "Lokasi ditemukan";
-    console.error(error);
+    if (lokasi) lokasi.textContent = "Lokasi ditemukan";
+    console.error("Error lokasi:", error);
   }
 }
 
@@ -127,19 +220,19 @@ if ("geolocation" in navigator) {
   navigator.geolocation.getCurrentPosition(
     ambilLokasi,
     function(error) {
-      lokasi.textContent = "Izin lokasi diperlukan";
-      kondisi.textContent = "Lokasi tidak tersedia";
-      console.error(error);
+      if (lokasi) lokasi.textContent = "Izin lokasi ditolak/gagal";
+      if (kondisi) kondisi.textContent = "Cuaca tidak tersedia";
+      console.error("Geolocation error:", error);
     },
-    {
-      enableHighAccuracy: true,
-      timeout: 15000
-    }
+    { enableHighAccuracy: true, timeout: 15000 }
   );
 } else {
-  lokasi.textContent = "GPS tidak didukung";
+  if (lokasi) lokasi.textContent = "GPS tidak didukung";
 }
 
+// ==========================================
+// 3. FITUR CATATAN (NOTES)
+// ==========================================
 const judulCatatan = document.getElementById("judul-catatan");
 const inputCatatan = document.getElementById("catatan-input");
 const tombolSimpan = document.getElementById("simpan-catatan");
@@ -150,11 +243,8 @@ const daftarCatatan = document.getElementById("daftar-catatan");
 const jumlahCatatan = document.getElementById("jumlah-catatan");
 
 let semuaCatatan = [];
-
 try {
-  semuaCatatan = JSON.parse(
-    localStorage.getItem("dashboard_catatan_list")
-  ) || [];
+  semuaCatatan = JSON.parse(localStorage.getItem("dashboard_catatan_list")) || [];
 } catch (error) {
   semuaCatatan = [];
 }
@@ -165,14 +255,11 @@ let fotoCatatanData = [];
 function kompresFoto(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
-
     reader.onload = function(event) {
       const gambar = new Image();
-
       gambar.onload = function() {
         const canvas = document.createElement("canvas");
         const batas = 800;
-
         let lebar = gambar.width;
         let tinggi = gambar.height;
 
@@ -186,23 +273,20 @@ function kompresFoto(file) {
 
         canvas.width = lebar;
         canvas.height = tinggi;
-
         const context = canvas.getContext("2d");
         context.drawImage(gambar, 0, 0, lebar, tinggi);
-
         resolve(canvas.toDataURL("image/jpeg", 0.6));
       };
-
       gambar.onerror = reject;
       gambar.src = event.target.result;
     };
-
     reader.onerror = reject;
     reader.readAsDataURL(file);
   });
 }
 
 function tampilkanPreviewFoto() {
+  if (!previewFoto) return;
   previewFoto.innerHTML = "";
 
   fotoCatatanData.forEach(function(foto, index) {
@@ -216,7 +300,6 @@ function tampilkanPreviewFoto() {
     const tombolHapus = document.createElement("button");
     tombolHapus.type = "button";
     tombolHapus.textContent = "×";
-
     tombolHapus.addEventListener("click", function() {
       fotoCatatanData.splice(index, 1);
       tampilkanPreviewFoto();
@@ -231,68 +314,62 @@ function tampilkanPreviewFoto() {
   previewFoto.appendChild(jumlah);
 }
 
-fotoCatatan.addEventListener("change", async function() {
-  const fileDipilih = Array.from(fotoCatatan.files);
-  const sisaSlot = 10 - fotoCatatanData.length;
+if (fotoCatatan) {
+  fotoCatatan.addEventListener("change", async function() {
+    const fileDipilih = Array.from(fotoCatatan.files);
+    const sisaSlot = 10 - fotoCatatanData.length;
 
-  if (sisaSlot <= 0) {
-    alert("Maksimal 10 foto per catatan!");
+    if (sisaSlot <= 0) {
+      await showCustomAlert("Maksimal 10 foto per catatan!");
+      fotoCatatan.value = "";
+      return;
+    }
+
+    if (fileDipilih.length > sisaSlot) {
+      await showCustomAlert(`Kamu hanya bisa menambahkan ${sisaSlot} foto lagi.`);
+    }
+
+    const fileDiproses = fileDipilih.slice(0, sisaSlot);
+    for (const file of fileDiproses) {
+      if (!file.type.startsWith("image/")) continue;
+      try {
+        const hasilKompres = await kompresFoto(file);
+        fotoCatatanData.push(hasilKompres);
+      } catch (error) {
+        console.error("Gagal memproses foto:", error);
+      }
+    }
+    tampilkanPreviewFoto();
     fotoCatatan.value = "";
-    return;
-  }
-
-  if (fileDipilih.length > sisaSlot) {
-    alert(`Kamu hanya bisa menambahkan ${sisaSlot} foto lagi.`);
-  }
-
-  const fileDiproses = fileDipilih.slice(0, sisaSlot);
-
-  for (const file of fileDiproses) {
-    if (!file.type.startsWith("image/")) {
-      continue;
-    }
-
-    try {
-      const hasilKompres = await kompresFoto(file);
-      fotoCatatanData.push(hasilKompres);
-    } catch (error) {
-      console.error("Gagal memproses foto:", error);
-    }
-  }
-
-  tampilkanPreviewFoto();
-  fotoCatatan.value = "";
-});
+  });
+}
 
 function simpanDataCatatan() {
   try {
-    localStorage.setItem(
-      "dashboard_catatan_list",
-      JSON.stringify(semuaCatatan)
-    );
-
+    localStorage.setItem("dashboard_catatan_list", JSON.stringify(semuaCatatan));
     return true;
   } catch (error) {
-    alert("Penyimpanan penuh. Coba kurangi foto atau catatan.");
+    showCustomAlert("Penyimpanan penuh. Coba kurangi foto atau catatan.");
     console.error(error);
     return false;
   }
 }
 
 function resetFormCatatan() {
-  judulCatatan.value = "";
-  inputCatatan.value = "";
-  fotoCatatan.value = "";
+  if (judulCatatan) judulCatatan.value = "";
+  if (inputCatatan) inputCatatan.value = "";
+  if (fotoCatatan) fotoCatatan.value = "";
   fotoCatatanData = [];
   catatanEditId = null;
-  previewFoto.innerHTML = "";
-  tombolSimpan.textContent = "SIMPAN";
-  statusCatatan.textContent = "Belum ada perubahan";
+  if (previewFoto) previewFoto.innerHTML = "";
+  if (tombolSimpan) tombolSimpan.textContent = "SIMPAN";
+  if (statusCatatan) statusCatatan.textContent = "Belum ada perubahan";
 }
 
 function tampilkanCatatan() {
+  if (!daftarCatatan) return;
   daftarCatatan.innerHTML = "";
-  jumlahCatatan.textContent = semuaCatatan.length;
+  if (jumlahCatatan) jumlahCatatan.textContent = semuaCatatan.length;
 
   if (semuaCatatan.length === 0) {
     const kosong = document.createElement("p");
@@ -328,7 +405,6 @@ function tampilkanCatatan() {
         gambar.alt = `Foto catatan ${index + 1}`;
         galeri.appendChild(gambar);
       });
-
       card.appendChild(galeri);
     }
 
@@ -338,7 +414,6 @@ function tampilkanCatatan() {
     const tombolEdit = document.createElement("button");
     tombolEdit.type = "button";
     tombolEdit.textContent = "EDIT";
-
     tombolEdit.addEventListener("click", function() {
       editCatatan(catatan.id);
     });
@@ -347,7 +422,6 @@ function tampilkanCatatan() {
     tombolHapus.type = "button";
     tombolHapus.className = "hapus-catatan";
     tombolHapus.textContent = "HAPUS";
-
     tombolHapus.addEventListener("click", function() {
       hapusCatatan(catatan.id);
     });
@@ -358,109 +432,85 @@ function tampilkanCatatan() {
   });
 }
 
-tombolSimpan.addEventListener("click", function() {
-  const judul = judulCatatan.value.trim();
-  const isi = inputCatatan.value.trim();
+if (tombolSimpan) {
+  tombolSimpan.addEventListener("click", async function() {
+    const judul = judulCatatan.value.trim();
+    const isi = inputCatatan.value.trim();
 
-  if (!judul && !isi && fotoCatatanData.length === 0) {
-    statusCatatan.textContent = "Catatan masih kosong";
-    return;
-  }
-
-  if (catatanEditId !== null) {
-    const index = semuaCatatan.findIndex(function(catatan) {
-      return catatan.id === catatanEditId;
-    });
-
-    if (index !== -1) {
-      semuaCatatan[index].judul = judul;
-      semuaCatatan[index].isi = isi;
-      semuaCatatan[index].foto = [...fotoCatatanData];
-      semuaCatatan[index].tanggal = new Date().toLocaleString("id-ID");
+    if (!judul && !isi && fotoCatatanData.length === 0) {
+      if (statusCatatan) statusCatatan.textContent = "Catatan masih kosong";
+      return;
     }
-  } else {
-    semuaCatatan.unshift({
-      id: Date.now(),
-      judul: judul,
-      isi: isi,
-      foto: [...fotoCatatanData],
-      tanggal: new Date().toLocaleString("id-ID")
-    });
-  }
 
-  if (!simpanDataCatatan()) return;
+    if (catatanEditId !== null) {
+      const index = semuaCatatan.findIndex(c => c.id === catatanEditId);
+      if (index !== -1) {
+        semuaCatatan[index].judul = judul;
+        semuaCatatan[index].isi = isi;
+        semuaCatatan[index].foto = [...fotoCatatanData];
+        semuaCatatan[index].tanggal = new Date().toLocaleString("id-ID");
+      }
+    } else {
+      semuaCatatan.unshift({
+        id: Date.now(),
+        judul: judul,
+        isi: isi,
+        foto: [...fotoCatatanData],
+        tanggal: new Date().toLocaleString("id-ID")
+      });
+    }
 
-  resetFormCatatan();
-  tampilkanCatatan();
-  statusCatatan.textContent = "Catatan berhasil disimpan";
-});
+    if (!simpanDataCatatan()) return;
+    resetFormCatatan();
+    tampilkanCatatan();
+    if (statusCatatan) statusCatatan.textContent = "Catatan berhasil disimpan";
+  });
+}
 
 function editCatatan(id) {
-  const catatan = semuaCatatan.find(function(item) {
-    return item.id === id;
-  });
-
+  const catatan = semuaCatatan.find(item => item.id === id);
   if (!catatan) return;
 
-  judulCatatan.value = catatan.judul || "";
-  inputCatatan.value = catatan.isi || "";
+  if (judulCatatan) judulCatatan.value = catatan.judul || "";
+  if (inputCatatan) inputCatatan.value = catatan.isi || "";
 
-  fotoCatatanData = Array.isArray(catatan.foto)
-    ? [...catatan.foto]
-    : catatan.foto
-      ? [catatan.foto]
-      : [];
-
+  fotoCatatanData = Array.isArray(catatan.foto) ? [...catatan.foto] : (catatan.foto ? [catatan.foto] : []);
   catatanEditId = id;
 
   tampilkanPreviewFoto();
-
-  tombolSimpan.textContent = "PERBARUI";
-  statusCatatan.textContent = "Sedang mengedit catatan";
+  if (tombolSimpan) tombolSimpan.textContent = "PERBARUI";
+  if (statusCatatan) statusCatatan.textContent = "Sedang mengedit catatan";
 
   const panel = document.getElementById("panel-catatan");
   const tombolBuka = document.getElementById("buka-catatan");
-
-  panel.hidden = false;
-  tombolBuka.querySelector("span").textContent = "−";
-  judulCatatan.focus();
+  if (panel) panel.hidden = false;
+  if (tombolBuka) tombolBuka.querySelector("span").textContent = "−";
+  if (judulCatatan) judulCatatan.focus();
 }
 
-function hapusCatatan(id) {
-  const konfirmasi = confirm("Yakin ingin menghapus catatan ini?");
-
+async function hapusCatatan(id) {
+  const konfirmasi = await showCustomConfirm("Yakin ingin menghapus catatan ini?");
   if (!konfirmasi) return;
 
-  const sebelumnya = semuaCatatan;
+  semuaCatatan = semuaCatatan.filter(catatan => catatan.id !== id);
+  if (!simpanDataCatatan()) return;
 
-  semuaCatatan = semuaCatatan.filter(function(catatan) {
-    return catatan.id !== id;
-  });
-
-  if (!simpanDataCatatan()) {
-    semuaCatatan = sebelumnya;
-    return;
-  }
-
-  if (catatanEditId === id) {
-    resetFormCatatan();
-  }
-
+  if (catatanEditId === id) resetFormCatatan();
   tampilkanCatatan();
 }
 
 tampilkanCatatan();
 
+// ==========================================
+// 4. TO-DO LIST
+// ==========================================
 const inputTugas = document.getElementById("tugas-input");
 const tombolTambah = document.getElementById("tambah-tugas");
 const daftarTugas = document.getElementById("daftar-tugas");
 
 let semuaTugas = [];
-
 try {
-  semuaTugas = JSON.parse(
-    localStorage.getItem("daftar-tugas")
-  ) || [];
+  semuaTugas = JSON.parse(localStorage.getItem("daftar-tugas")) || [];
 } catch (error) {
   semuaTugas = [];
 }
@@ -470,10 +520,20 @@ function simpanTugas() {
 }
 
 function tampilkanTugas() {
+  if (!daftarTugas) return;
   daftarTugas.innerHTML = "";
+
+  if (semuaTugas.length === 0) {
+    const kosong = document.createElement("div");
+    kosong.className = "tugas-kosong";
+    kosong.textContent = "Belum ada tugas.";
+    daftarTugas.appendChild(kosong);
+    return;
+  }
 
   semuaTugas.forEach(function(tugas, index) {
     const item = document.createElement("li");
+    item.className = "item-tugas";
 
     const checkbox = document.createElement("input");
     checkbox.type = "checkbox";
@@ -483,8 +543,7 @@ function tampilkanTugas() {
     teks.textContent = tugas.nama;
 
     if (tugas.selesai) {
-      teks.style.textDecoration = "line-through";
-      teks.style.opacity = "0.5";
+      item.classList.add("selesai");
     }
 
     checkbox.addEventListener("change", function() {
@@ -495,8 +554,8 @@ function tampilkanTugas() {
 
     const hapus = document.createElement("button");
     hapus.type = "button";
+    hapus.className = "hapus-tugas";
     hapus.textContent = "×";
-
     hapus.addEventListener("click", function() {
       semuaTugas.splice(index, 1);
       simpanTugas();
@@ -509,34 +568,34 @@ function tampilkanTugas() {
 }
 
 function tambahTugas() {
+  if (!inputTugas) return;
   const namaTugas = inputTugas.value.trim();
-
   if (namaTugas === "") return;
 
-  semuaTugas.push({
-    nama: namaTugas,
-    selesai: false
-  });
-
+  semuaTugas.push({ nama: namaTugas, selesai: false });
   simpanTugas();
   tampilkanTugas();
   inputTugas.value = "";
 }
 
-tombolTambah.addEventListener("click", tambahTugas);
-
-inputTugas.addEventListener("keydown", function(event) {
-  if (event.key === "Enter") {
-    tambahTugas();
-  }
-});
+if (tombolTambah) tombolTambah.addEventListener("click", tambahTugas);
+if (inputTugas) {
+  inputTugas.addEventListener("keydown", function(event) {
+    if (event.key === "Enter") tambahTugas();
+  });
+}
 
 tampilkanTugas();
 
+// ==========================================
+// 5. PANEL TOGGLE
+// ==========================================
 function aturPanel(tombolBuka, panel, tombolTutup) {
   const buka = document.getElementById(tombolBuka);
   const isi = document.getElementById(panel);
   const tutup = document.getElementById(tombolTutup);
+
+  if (!buka || !isi || !tutup) return;
 
   buka.addEventListener("click", function() {
     isi.hidden = !isi.hidden;
@@ -552,46 +611,20 @@ function aturPanel(tombolBuka, panel, tombolTutup) {
 aturPanel("buka-catatan", "panel-catatan", "tutup-catatan");
 aturPanel("buka-tugas", "panel-tugas", "tutup-tugas");
 
-document.getElementById("tutup-catatan").addEventListener("click", function() {
-  resetFormCatatan();
-});
-
-if ("serviceWorker" in navigator) {
-  window.addEventListener("load", function() {
-    navigator.serviceWorker.register("/service-worker.js")
-      .catch(function(error) {
-        console.error("Service Worker gagal:", error);
-      });
-  });
+const tutupCatatanBtn = document.getElementById("tutup-catatan");
+if (tutupCatatanBtn) {
+  tutupCatatanBtn.addEventListener("click", resetFormCatatan);
 }
-  
+
+// ==========================================
+// 6. FULLSCREEN FOTO MODAL
+// ==========================================
 const modalFoto = document.getElementById("foto-fullscreen");
 const gambarFullscreen = document.getElementById("foto-fullscreen-img");
 const tombolTutupFoto = document.getElementById("tutup-foto-fullscreen");
-const daftarCatatan = document.getElementById("daftar-catatan");
 
-daftarCatatan.addEventListener("click", function(e) {
-  if (e.target.tagName === "IMG" && e.target.closest(".catatan-galeri")) {
-    gambarFullscreen.src = e.target.src;
-    modalFoto.classList.add("aktif");
-  }
-});
-
-tombolTutupFoto.addEventListener("click", function() {
-  modalFoto.classList.remove("aktif");
-  gambarFullscreen.src = "";
-});
-
-modalFoto.addEventListener("click", function(e) {
-  if (e.target === modalFoto) {
-    modalFoto.classList.remove("aktif");
-    gambarFullscreen.src = "";
-  }
-});
-
-document.addEventListener("keydown", function(e) {
-  if (e.key === "Escape") {
-    modalFoto.classList.remove("aktif");
-    gambarFullscreen.src = "";
-  }
-});
+if (daftarCatatan && modalFoto && gambarFullscreen) {
+  daftarCatatan.addEventListener("click", function(e) {
+    if (e.target.tagName === "IMG" && e.target.closest(".catatan-galeri")) {
+      gambarFullscreen.src = e.target.src;
+    
