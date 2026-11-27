@@ -160,7 +160,7 @@ try {
 }
 
 let catatanEditId = null;
-let fotoCatatanData = "";
+let fotoCatatanData = [];
 
 function kompresFoto(file) {
   return new Promise((resolve, reject) => {
@@ -190,7 +190,7 @@ function kompresFoto(file) {
         const context = canvas.getContext("2d");
         context.drawImage(gambar, 0, 0, lebar, tinggi);
 
-        resolve(canvas.toDataURL("image/jpeg", 0.65));
+        resolve(canvas.toDataURL("image/jpeg", 0.6));
       };
 
       gambar.onerror = reject;
@@ -202,42 +202,66 @@ function kompresFoto(file) {
   });
 }
 
+function tampilkanPreviewFoto() {
+  previewFoto.innerHTML = "";
+
+  fotoCatatanData.forEach(function(foto, index) {
+    const wadah = document.createElement("div");
+    wadah.className = "preview-item";
+
+    const gambar = document.createElement("img");
+    gambar.src = foto;
+    gambar.alt = `Foto ${index + 1}`;
+
+    const tombolHapus = document.createElement("button");
+    tombolHapus.type = "button";
+    tombolHapus.textContent = "×";
+
+    tombolHapus.addEventListener("click", function() {
+      fotoCatatanData.splice(index, 1);
+      tampilkanPreviewFoto();
+    });
+
+    wadah.append(gambar, tombolHapus);
+    previewFoto.appendChild(wadah);
+  });
+
+  const jumlah = document.createElement("p");
+  jumlah.textContent = `${fotoCatatanData.length}/10 foto`;
+  previewFoto.appendChild(jumlah);
+}
+
 fotoCatatan.addEventListener("change", async function() {
-  const file = fotoCatatan.files[0];
+  const fileDipilih = Array.from(fotoCatatan.files);
+  const sisaSlot = 10 - fotoCatatanData.length;
 
-  if (!file) return;
-
-  if (!file.type.startsWith("image/")) {
-    alert("File harus berupa gambar");
+  if (sisaSlot <= 0) {
+    alert("Maksimal 10 foto per catatan!");
     fotoCatatan.value = "";
     return;
   }
 
-  try {
-    fotoCatatanData = await kompresFoto(file);
-
-    previewFoto.innerHTML = "";
-
-    const gambar = document.createElement("img");
-    gambar.src = fotoCatatanData;
-    gambar.alt = "Preview foto catatan";
-
-    const tombolHapusFoto = document.createElement("button");
-    tombolHapusFoto.type = "button";
-    tombolHapusFoto.textContent = "HAPUS FOTO";
-
-    tombolHapusFoto.addEventListener("click", function() {
-      fotoCatatanData = "";
-      fotoCatatan.value = "";
-      previewFoto.innerHTML = "";
-    });
-
-    previewFoto.append(gambar, tombolHapusFoto);
-
-  } catch (error) {
-    alert("Gagal memproses foto");
-    console.error(error);
+  if (fileDipilih.length > sisaSlot) {
+    alert(`Kamu hanya bisa menambahkan ${sisaSlot} foto lagi.`);
   }
+
+  const fileDiproses = fileDipilih.slice(0, sisaSlot);
+
+  for (const file of fileDiproses) {
+    if (!file.type.startsWith("image/")) {
+      continue;
+    }
+
+    try {
+      const hasilKompres = await kompresFoto(file);
+      fotoCatatanData.push(hasilKompres);
+    } catch (error) {
+      console.error("Gagal memproses foto:", error);
+    }
+  }
+
+  tampilkanPreviewFoto();
+  fotoCatatan.value = "";
 });
 
 function simpanDataCatatan() {
@@ -249,7 +273,7 @@ function simpanDataCatatan() {
 
     return true;
   } catch (error) {
-    alert("Penyimpanan penuh. Coba hapus beberapa foto atau catatan.");
+    alert("Penyimpanan penuh. Coba kurangi foto atau catatan.");
     console.error(error);
     return false;
   }
@@ -259,7 +283,7 @@ function resetFormCatatan() {
   judulCatatan.value = "";
   inputCatatan.value = "";
   fotoCatatan.value = "";
-  fotoCatatanData = "";
+  fotoCatatanData = [];
   catatanEditId = null;
   previewFoto.innerHTML = "";
   tombolSimpan.textContent = "SIMPAN";
@@ -294,11 +318,18 @@ function tampilkanCatatan() {
 
     card.append(judul, isi);
 
-    if (catatan.foto) {
-      const gambar = document.createElement("img");
-      gambar.src = catatan.foto;
-      gambar.alt = "Foto catatan";
-      card.appendChild(gambar);
+    if (catatan.foto && catatan.foto.length > 0) {
+      const galeri = document.createElement("div");
+      galeri.className = "catatan-galeri";
+
+      catatan.foto.forEach(function(foto, index) {
+        const gambar = document.createElement("img");
+        gambar.src = foto;
+        gambar.alt = `Foto catatan ${index + 1}`;
+        galeri.appendChild(gambar);
+      });
+
+      card.appendChild(galeri);
     }
 
     const aksi = document.createElement("div");
@@ -307,6 +338,7 @@ function tampilkanCatatan() {
     const tombolEdit = document.createElement("button");
     tombolEdit.type = "button";
     tombolEdit.textContent = "EDIT";
+
     tombolEdit.addEventListener("click", function() {
       editCatatan(catatan.id);
     });
@@ -315,6 +347,7 @@ function tampilkanCatatan() {
     tombolHapus.type = "button";
     tombolHapus.className = "hapus-catatan";
     tombolHapus.textContent = "HAPUS";
+
     tombolHapus.addEventListener("click", function() {
       hapusCatatan(catatan.id);
     });
@@ -329,7 +362,7 @@ tombolSimpan.addEventListener("click", function() {
   const judul = judulCatatan.value.trim();
   const isi = inputCatatan.value.trim();
 
-  if (!judul && !isi && !fotoCatatanData) {
+  if (!judul && !isi && fotoCatatanData.length === 0) {
     statusCatatan.textContent = "Catatan masih kosong";
     return;
   }
@@ -342,7 +375,7 @@ tombolSimpan.addEventListener("click", function() {
     if (index !== -1) {
       semuaCatatan[index].judul = judul;
       semuaCatatan[index].isi = isi;
-      semuaCatatan[index].foto = fotoCatatanData;
+      semuaCatatan[index].foto = [...fotoCatatanData];
       semuaCatatan[index].tanggal = new Date().toLocaleString("id-ID");
     }
   } else {
@@ -350,7 +383,7 @@ tombolSimpan.addEventListener("click", function() {
       id: Date.now(),
       judul: judul,
       isi: isi,
-      foto: fotoCatatanData,
+      foto: [...fotoCatatanData],
       tanggal: new Date().toLocaleString("id-ID")
     });
   }
@@ -358,8 +391,8 @@ tombolSimpan.addEventListener("click", function() {
   if (!simpanDataCatatan()) return;
 
   resetFormCatatan();
-  statusCatatan.textContent = "Catatan berhasil disimpan";
   tampilkanCatatan();
+  statusCatatan.textContent = "Catatan berhasil disimpan";
 });
 
 function editCatatan(id) {
@@ -369,30 +402,18 @@ function editCatatan(id) {
 
   if (!catatan) return;
 
-  judulCatatan.value = catatan.judul;
-  inputCatatan.value = catatan.isi;
-  fotoCatatanData = catatan.foto || "";
+  judulCatatan.value = catatan.judul || "";
+  inputCatatan.value = catatan.isi || "";
+
+  fotoCatatanData = Array.isArray(catatan.foto)
+    ? [...catatan.foto]
+    : catatan.foto
+      ? [catatan.foto]
+      : [];
+
   catatanEditId = id;
 
-  previewFoto.innerHTML = "";
-
-  if (fotoCatatanData) {
-    const gambar = document.createElement("img");
-    gambar.src = fotoCatatanData;
-    gambar.alt = "Preview foto catatan";
-
-    const tombolHapusFoto = document.createElement("button");
-    tombolHapusFoto.type = "button";
-    tombolHapusFoto.textContent = "HAPUS FOTO";
-
-    tombolHapusFoto.addEventListener("click", function() {
-      fotoCatatanData = "";
-      fotoCatatan.value = "";
-      previewFoto.innerHTML = "";
-    });
-
-    previewFoto.append(gambar, tombolHapusFoto);
-  }
+  tampilkanPreviewFoto();
 
   tombolSimpan.textContent = "PERBARUI";
   statusCatatan.textContent = "Sedang mengedit catatan";
@@ -542,5 +563,5 @@ if ("serviceWorker" in navigator) {
         console.error("Service Worker gagal:", error);
       });
   });
-      }
-            
+}
+  
