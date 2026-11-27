@@ -823,3 +823,53 @@ footer span {
     gap: 6px;
   }
 }
+
+.foto-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(0, 0, 0, 0.95);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+  opacity: 0;
+  visibility: hidden;
+  transition: 0.25s ease;
+}
+
+.foto-modal.aktif {
+  opacity: 1;
+  visibility: visible;
+}
+
+#foto-fullscreen-img {
+  max-width: 100%;
+  max-height: 90vh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: 5px;
+}
+
+#tutup-foto-fullscreen {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: #191919;
+  border: 1px solid #444;
+  color: white;
+  font-size: 28px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.catatan-galeri img {
+  cursor: zoom-in;
+}
