@@ -627,4 +627,41 @@ if (daftarCatatan && modalFoto && gambarFullscreen) {
   daftarCatatan.addEventListener("click", function(e) {
     if (e.target.tagName === "IMG" && e.target.closest(".catatan-galeri")) {
       gambarFullscreen.src = e.target.src;
-    
+    modalFoto.classList.add("aktif");
+    }
+  });
+}
+
+if (tombolTutupFoto) {
+  tombolTutupFoto.addEventListener("click", function() {
+    modalFoto.classList.remove("aktif");
+    gambarFullscreen.src = "";
+  });
+}
+
+if (modalFoto) {
+  modalFoto.addEventListener("click", function(e) {
+    if (e.target === modalFoto) {
+      modalFoto.classList.remove("aktif");
+      gambarFullscreen.src = "";
+    }
+  });
+}
+
+document.addEventListener("keydown", function(e) {
+  if (e.key === "Escape" && modalFoto) {
+    modalFoto.classList.remove("aktif");
+    if (gambarFullscreen) gambarFullscreen.src = "";
+  }
+});
+
+// ==========================================
+// 7. SERVICE WORKER
+// ==========================================
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", function() {
+    navigator.serviceWorker.register("/service-worker.js").catch(function(error) {
+      console.error("Service Worker gagal:", error);
+    });
+  });
+}
