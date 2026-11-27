@@ -541,5 +541,189 @@ footer span {
     font-size: 8px;
     letter-spacing: 0.5px;
   }
-  }
+}
+
+/* NOTES 2.0 - UPLOAD FOTO */
+
+/* INPUT JUDUL */
+
+#judul-catatan {
+  width: 100%;
+  margin-top: 15px;
+  padding: 14px;
+  background: #151515;
+  border: 1px solid #303030;
+  border-radius: 10px;
+  color: #FFFFFF;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  outline: none;
+  transition: 0.3s ease;
+}
+
+#judul-catatan:focus {
+  border-color: #FF9A00;
+}
+
+/* TOMBOL UPLOAD DAN SIMPAN */
+
+.catatan-button-group {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.btn-upload,
+#simpan-catatan {
+  flex: 1;
+  min-width: 0;
+  min-height: 45px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 9px;
+  font-family: Arial, sans-serif;
+  font-size: 11px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.btn-upload {
+  background: #191919;
+  color: #FF9A00;
+  border: 1px solid #383838;
+}
+
+#simpan-catatan {
+  margin: 0;
+  padding: 12px;
+  background: #FF9A00;
+  color: #0B0B0B;
+  border: none;
+}
+
+.btn-upload:active,
+#simpan-catatan:active {
+  transform: scale(0.97);
+}
+
+/* PREVIEW FOTO */
+
+#preview-foto {
+  margin-top: 12px;
+}
+
+#preview-foto img {
+  display: block;
+  width: 100%;
+  max-height: 250px;
+  object-fit: contain;
+  background: #111111;
+  border: 1px solid #292929;
+  border-radius: 10px;
+}
+
+#preview-foto button {
+  margin-top: 8px;
+  padding: 8px 12px;
+  background: #202020;
+  color: #FF9A00;
+  border: 1px solid #333333;
+  border-radius: 7px;
+  font-size: 11px;
+}
+
+/* DAFTAR CATATAN */
+
+.catatan-tersimpan {
+  margin-top: 30px;
+}
+
+.catatan-list-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+.catatan-list-heading h3 {
+  font-size: 15px;
+}
+
+#jumlah-catatan {
+  color: #FF9A00;
+  font-size: 11px;
+  padding: 5px 10px;
+  border: 1px solid rgba(255,154,0,0.2);
+  border-radius: 20px;
+}
+
+.catatan-card {
+  background: #151515;
+  border: 1px solid #292929;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 12px;
+  animation: panelMasuk 0.25s ease;
+}
+
+.catatan-card h4 {
+  font-size: 14px;
+  margin-bottom: 8px;
+  overflow-wrap: anywhere;
+}
+
+.catatan-card p {
+  color: #999999;
+  font-size: 12px;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.catatan-card img {
+  width: 100%;
+  max-height: 300px;
+  object-fit: contain;
+  margin-top: 12px;
+  border-radius: 9px;
+  background: #0B0B0B;
+}
+
+.catatan-tanggal {
+  color: #FF9A00;
+  font-size: 10px;
+  margin-top: 12px;
+}
+
+.catatan-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.catatan-actions button {
+  padding: 8px 12px;
+  border-radius: 7px;
+  background: #202020;
+  color: #FFFFFF;
+  border: 1px solid #333333;
+  font-size: 11px;
+}
+
+.catatan-actions .hapus-catatan {
+  color: #FF9A00;
+}
+
+.catatan-kosong {
+  padding: 20px;
+  text-align: center;
+  color: #666666;
+  font-size: 12px;
+  border: 1px dashed #333333;
+  border-radius: 10px;
+    }
   
