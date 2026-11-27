@@ -565,3 +565,33 @@ if ("serviceWorker" in navigator) {
   });
 }
   
+const modalFoto = document.getElementById("foto-fullscreen");
+const gambarFullscreen = document.getElementById("foto-fullscreen-img");
+const tombolTutupFoto = document.getElementById("tutup-foto-fullscreen");
+const daftarCatatan = document.getElementById("daftar-catatan");
+
+daftarCatatan.addEventListener("click", function(e) {
+  if (e.target.tagName === "IMG" && e.target.closest(".catatan-galeri")) {
+    gambarFullscreen.src = e.target.src;
+    modalFoto.classList.add("aktif");
+  }
+});
+
+tombolTutupFoto.addEventListener("click", function() {
+  modalFoto.classList.remove("aktif");
+  gambarFullscreen.src = "";
+});
+
+modalFoto.addEventListener("click", function(e) {
+  if (e.target === modalFoto) {
+    modalFoto.classList.remove("aktif");
+    gambarFullscreen.src = "";
+  }
+});
+
+document.addEventListener("keydown", function(e) {
+  if (e.key === "Escape") {
+    modalFoto.classList.remove("aktif");
+    gambarFullscreen.src = "";
+  }
+});
