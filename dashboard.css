@@ -873,3 +873,147 @@ footer span {
 .catatan-galeri img {
   cursor: zoom-in;
 }
+
+CSS
+
+/* =================================
+   TODO LIST - STYLE FIX
+================================= */
+
+#daftar-tugas {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  width: 100%;
+  list-style: none;
+}
+
+.item-tugas {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-width: 0;
+  padding: 13px 5px;
+  border-bottom: 1px solid #292929;
+  border-radius: 6px;
+  transition: background 0.2s ease;
+}
+
+/* CHECKBOX */
+
+.item-tugas input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  flex: 0 0 19px;
+  width: 19px;
+  height: 19px;
+  margin: 0;
+  border: 1.5px solid #555;
+  border-radius: 6px;
+  background: #151515;
+  cursor: pointer;
+  position: relative;
+  transition: 0.2s ease;
+}
+
+.item-tugas input[type="checkbox"]:checked {
+  background: #FF9A00;
+  border-color: #FF9A00;
+}
+
+.item-tugas input[type="checkbox"]:checked::after {
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 1px;
+  width: 5px;
+  height: 10px;
+  border: solid #0B0B0B;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.item-tugas input[type="checkbox"]:active {
+  transform: scale(0.88);
+}
+
+/* TEKS TUGAS */
+
+.item-tugas span {
+  flex: 1;
+  min-width: 0;
+  color: #EEEEEE;
+  font-size: 13px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+  transition: 0.2s ease;
+}
+
+.item-tugas.selesai span {
+  color: #666;
+  text-decoration: line-through;
+}
+
+/* TOMBOL HAPUS X */
+
+.item-tugas .hapus-tugas {
+  appearance: none;
+  -webkit-appearance: none;
+  flex: 0 0 34px;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: auto;
+  padding: 0;
+  background: #19130A;
+  color: #FF9A00;
+  border: 1px solid rgba(255,154,0,0.2);
+  border-radius: 9px;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.item-tugas .hapus-tugas:active {
+  transform: scale(0.88);
+  background: #FF9A00;
+  color: #0B0B0B;
+}
+
+.item-tugas .hapus-tugas:focus {
+  outline: none;
+}
+
+/* TUGAS KOSONG */
+
+.tugas-kosong {
+  padding: 18px 10px;
+  text-align: center;
+  color: #777;
+  font-size: 12px;
+  border: 1px dashed #333;
+  border-radius: 9px;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 480px) {
+  .item-tugas {
+    gap: 10px;
+    padding: 12px 3px;
+  }
+
+  .item-tugas span {
+    font-size: 12px;
+  }
+
+  .item-tugas .hapus-tugas {
+    flex-basis: 32px;
+    width: 32px;
+    height: 32px;
+  }
+  }
