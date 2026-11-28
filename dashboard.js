@@ -610,7 +610,7 @@ function aturPanel(tombolBuka, panel, tombolTutup) {
 
 aturPanel("buka-catatan", "panel-catatan", "tutup-catatan");
 aturPanel("buka-tugas", "panel-tugas", "tutup-tugas");
-aturPanel("buka-tools", "panel-tools", "tutup-tools"); // Panel Tools baru
+aturPanel("buka-tools", "panel-tools", "tutup-tools");
 
 const tutupCatatanBtn = document.getElementById("tutup-catatan");
 if (tutupCatatanBtn) {
@@ -667,14 +667,19 @@ if (themeToggleBtn) {
 }
 
 // ==========================================
-// 8. FITUR KALKULATOR & VARIABEL
+// 8. FITUR KALKULATOR & VARIABEL (DIOPTIMALKAN)
 // ==========================================
 const calcInputField = document.getElementById("calc-input-field");
 const calcDisplay = document.getElementById("calc-display");
 
 function calcInsert(val) {
   if (!calcInputField) return;
-  calcInputField.value += val;
+  const start = calcInputField.selectionStart;
+  const end = calcInputField.selectionEnd;
+  const text = calcInputField.value;
+
+  calcInputField.value = text.substring(0, start) + val + text.substring(end);
+  calcInputField.selectionStart = calcInputField.selectionEnd = start + val.length;
   calcInputField.focus();
 }
 
@@ -730,6 +735,7 @@ window.calcHitung = function() {
 if (calcInputField) {
   calcInputField.addEventListener("keydown", function(e) {
     if (e.key === "Enter") {
+      e.preventDefault();
       calcHitung();
     }
   });
