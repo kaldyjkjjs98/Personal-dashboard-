@@ -2,6 +2,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent !important;
 }
 
 body {
@@ -23,6 +24,31 @@ header {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 45px;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.btn-theme {
+  background: #151515;
+  border: 1px solid #333;
+  color: #FF9A00;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.2s ease;
+}
+
+.btn-theme:active {
+  transform: scale(0.9);
 }
 
 .brand h1 {
@@ -242,7 +268,7 @@ header {
   margin-top: 10px;
 }
 
-/* PERSONAL DAN TO-DO */
+/* PERSONAL, TO-DO & TOOLS */
 
 .notes,
 .taks {
@@ -281,10 +307,10 @@ header {
 }
 
 #buka-catatan,
-#buka-tugas {
+#buka-tugas,
+#buka-tools {
   appearance: none !important;
   -webkit-appearance: none !important;
-  -webkit-tap-highlight-color: transparent !important;
   display: flex;
   align-items: center;
   gap: 12px;
@@ -305,12 +331,14 @@ header {
 }
 
 #buka-catatan:hover,
-#buka-tugas:hover {
+#buka-tugas:hover,
+#buka-tools:hover {
   color: #FF9A00 !important;
 }
 
 #buka-catatan span,
-#buka-tugas span {
+#buka-tugas span,
+#buka-tools span {
   display: inline-flex;
   justify-content: center;
   align-items: center;
@@ -323,6 +351,98 @@ header {
   border-radius: 50%;
   font-size: 17px;
   transition: 0.3s ease;
+}
+
+/* =================================
+   GAYA KARTU TOOLS & KALKULATOR ADVANCED
+================================= */
+.tools-box {
+  background: #141414;
+  border: 1px solid #242424;
+  border-radius: 16px;
+  padding: 20px;
+  margin-top: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.tools-box h3 {
+  font-size: 13px;
+  color: #FF9A00;
+  margin-bottom: 14px;
+  letter-spacing: 1.5px;
+  font-weight: 600;
+}
+
+#calc-input-field {
+  width: 100%;
+  padding: 12px 14px;
+  background: #0B0B0B;
+  border: 1px solid #262626;
+  border-radius: 10px;
+  color: #FF9A00;
+  font-size: 15px;
+  margin-bottom: 10px;
+  outline: none;
+  font-family: inherit;
+  transition: border-color 0.2s ease;
+  box-sizing: border-box;
+}
+
+#calc-input-field:focus {
+  border-color: #FF9A00;
+}
+
+.calc-screen {
+  background: #0B0B0B;
+  border: 1px solid #262626;
+  border-radius: 10px;
+  color: #FFFFFF;
+  font-size: 20px;
+  padding: 14px;
+  text-align: right;
+  margin-bottom: 12px;
+  overflow-x: auto;
+  font-family: monospace;
+}
+
+.calc-grid-advanced {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.calc-grid-advanced button {
+  background: #1C1C1C;
+  border: 1px solid #2E2E2E;
+  color: #FFFFFF;
+  font-size: 15px;
+  padding: 14px 0;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+
+.calc-grid-advanced button:hover {
+  border-color: #FF9A00;
+  color: #FF9A00;
+  background: #222222;
+}
+
+.calc-grid-advanced button:active {
+  transform: scale(0.96);
+}
+
+.calc-grid-advanced .btn-sama-dengan {
+  grid-column: span 2;
+  background: #FF9A00 !important;
+  color: #0B0B0B !important;
+  font-weight: 700;
+}
+
+.calc-grid-advanced .btn-sama-dengan:hover {
+  background: #e08800 !important;
+  color: #0B0B0B !important;
 }
 
 /* PANEL CATATAN DAN TUGAS */
@@ -846,6 +966,57 @@ footer span {
   transform: scale(0.95);
 }
 
+/* LIGHT MODE STYLING */
+body.light-mode {
+  background: #F4F4F4;
+  color: #111111;
+}
+
+body.light-mode .weather,
+body.light-mode .extra-item,
+body.light-mode .notes,
+body.light-mode .taks,
+body.light-mode .tools-box,
+body.light-mode .catatan-card,
+body.light-mode .item-tugas,
+body.light-mode .calc-screen,
+body.light-mode .calc-grid-advanced button,
+body.light-mode #calc-input-field,
+body.light-mode #judul-catatan,
+body.light-mode #catatan-input,
+body.light-mode #tugas-input,
+body.light-mode .btn-upload,
+body.light-mode .btn-theme,
+body.light-mode .custom-modal-box {
+  background: #FFFFFF;
+  color: #111111;
+  border-color: #DCDCDC;
+}
+
+body.light-mode .weather-detail p,
+body.light-mode .catatan-card p,
+body.light-mode .extra-item span,
+body.light-mode .status,
+body.light-mode .item-tugas span,
+body.light-mode .lokasi-item span,
+body.light-mode .custom-modal-box p {
+  color: #555555;
+}
+
+body.light-mode .lokasi-item p,
+body.light-mode #buka-catatan,
+body.light-mode #buka-tugas,
+body.light-mode #buka-tools,
+body.light-mode #detail-lokasi-toggle {
+  color: #111111 !important;
+}
+
+body.light-mode .clock,
+body.light-mode footer,
+body.light-mode .detail-lokasi-container {
+  border-color: #DCDCDC;
+}
+
 /* ANIMASI */
 @keyframes goyangCuaca {
   0%, 100% { transform: translateY(0); }
@@ -860,4 +1031,5 @@ footer span {
 @keyframes panelMasuk {
   from { opacity: 0; transform: translateY(-8px); }
   to { opacity: 1; transform: translateY(0); }
-  }
+    }
+  
