@@ -1,5 +1,5 @@
 
-const CACHE_NAME = "kaldys-dashboard-v13";
+const CACHE_NAME = "kaldys-dashboard-v7";
 
 const FILES_TO_CACHE = [
   "/",
