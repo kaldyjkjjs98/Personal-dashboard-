@@ -742,3 +742,21 @@ window.calcHitung = function() {
   }
 };
       
+// Fungsi untuk menghapus 1 karakter di sebelah kiri kursor (Backspace)
+function calcBack() {
+  if (!calcInputField) return;
+  const start = calcInputField.selectionStart;
+  const end = calcInputField.selectionEnd;
+  const text = calcInputField.value;
+
+  if (start > 0 || start !== end) {
+    if (start === end) {
+      calcInputField.value = text.substring(0, start - 1) + text.substring(end);
+      calcInputField.selectionStart = calcInputField.selectionEnd = start - 1;
+    } else {
+      calcInputField.value = text.substring(0, start) + text.substring(end);
+      calcInputField.selectionStart = calcInputField.selectionEnd = start;
+    }
+  }
+  calcInputField.focus();
+}
