@@ -610,6 +610,7 @@ function aturPanel(tombolBuka, panel, tombolTutup) {
 
 aturPanel("buka-catatan", "panel-catatan", "tutup-catatan");
 aturPanel("buka-tugas", "panel-tugas", "tutup-tugas");
+aturPanel("buka-tools", "panel-tools", "tutup-tools"); // Panel Tools baru
 
 const tutupCatatanBtn = document.getElementById("tutup-catatan");
 if (tutupCatatanBtn) {
@@ -627,41 +628,109 @@ if (daftarCatatan && modalFoto && gambarFullscreen) {
   daftarCatatan.addEventListener("click", function(e) {
     if (e.target.tagName === "IMG" && e.target.closest(".catatan-galeri")) {
       gambarFullscreen.src = e.target.src;
-    modalFoto.classList.add("aktif");
+      modalFoto.classList.add("aktif");
     }
   });
 }
 
-if (tombolTutupFoto) {
+if (tombolTutupFoto && modalFoto) {
   tombolTutupFoto.addEventListener("click", function() {
     modalFoto.classList.remove("aktif");
-    gambarFullscreen.src = "";
   });
-}
 
-if (modalFoto) {
   modalFoto.addEventListener("click", function(e) {
     if (e.target === modalFoto) {
       modalFoto.classList.remove("aktif");
-      gambarFullscreen.src = "";
     }
   });
 }
 
-document.addEventListener("keydown", function(e) {
-  if (e.key === "Escape" && modalFoto) {
-    modalFoto.classList.remove("aktif");
-    if (gambarFullscreen) gambarFullscreen.src = "";
-  }
-});
+// ==========================================
+// 7. FITUR TOGGLE DARK / LIGHT MODE
+// ==========================================
+const themeToggleBtn = document.getElementById("theme-toggle");
 
-// ==========================================
-// 7. SERVICE WORKER
-// ==========================================
-if ("serviceWorker" in navigator) {
-  window.addEventListener("load", function() {
-    navigator.serviceWorker.register("/service-worker.js").catch(function(error) {
-      console.error("Service Worker gagal:", error);
-    });
+if (themeToggleBtn) {
+  const savedTheme = localStorage.getItem("dashboard_theme");
+  if (savedTheme === "light") {
+    document.body.classList.add("light-mode");
+    themeToggleBtn.textContent = "🌙";
+  }
+
+  themeToggleBtn.addEventListener("click", function() {
+    document.body.classList.toggle("light-mode");
+    const isLight = document.body.classList.contains("light-mode");
+    
+    themeToggleBtn.textContent = isLight ? "🌙" : "☀️";
+    localStorage.setItem("dashboard_theme", isLight ? "light" : "dark");
   });
 }
+
+// ==========================================
+// 8. FITUR KALKULATOR & VARIABEL
+// ==========================================
+const calcInputField = document.getElementById("calc-input-field");
+const calcDisplay = document.getElementById("calc-display");
+
+function calcInsert(val) {
+  if (!calcInputField) return;
+  calcInputField.value += val;
+  calcInputField.focus();
+}
+
+function calcClear() {
+  if (calcInputField) calcInputField.value = "";
+  if (calcDisplay) calcDisplay.textContent = "0";
+}
+
+window.calcHitung = function() {
+  if (!calcInputField || !calcDisplay) return;
+  let ekspresi = calcInputField.value.trim();
+  
+  if (!ekspresi) return;
+
+  try {
+    if (ekspresi.includes("<") || ekspresi.includes(">")) {
+      calcDisplay.textContent = "Mode Pertidaksamaan Aktif";
+      return;
+    }
+
+    if (/[xy]/.test(ekspresi)) {
+      calcDisplay.textContent = `Bentuk Variabel: ${ekspresi}`;
+      return;
+    }
+
+    let proses = ekspresi
+      .replace(/÷/g, "/")
+      .replace(/×/g, "*");
+
+    proses = proses.replace(/sin\(([^)]+)\)/g, (match, p1) => {
+      let rad = (parseFloat(p1) * Math.PI) / 180;
+      return Math.sin(rad);
+    });
+
+    proses = proses.replace(/cos\(([^)]+)\)/g, (match, p1) => {
+      let rad = (parseFloat(p1) * Math.PI) / 180;
+      return Math.cos(rad);
+    });
+
+    let hasil = eval(proses);
+    if (!isFinite(hasil)) throw new Error();
+
+    if (!Number.isInteger(hasil)) {
+      hasil = parseFloat(hasil.toFixed(4));
+    }
+
+    calcDisplay.textContent = hasil;
+  } catch (e) {
+    calcDisplay.textContent = "Format Error";
+  }
+};
+
+if (calcInputField) {
+  calcInputField.addEventListener("keydown", function(e) {
+    if (e.key === "Enter") {
+      calcHitung();
+    }
+  });
+      }
