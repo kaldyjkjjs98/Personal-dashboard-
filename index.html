@@ -237,10 +237,10 @@
             
             <div class="calc-screen" id="calc-display">0</div>
             
-            <div class="calc-buttons calc-grid-advanced">
+                        <div class="calc-buttons calc-grid-advanced">
               <button type="button" onclick="calcClear()">C</button>
-              <button type="button" onclick="calcInsert('x')">x</button>
-              <button type="button" onclick="calcInsert('y')">y</button>
+              <button type="button" onclick="calcBack()"><span style="font-size: 16px;">⌫</span></button>
+              <button type="button" onclick="calcInsert(' ')">Spasi</button>
               <button type="button" onclick="calcInsert('÷')">÷</button>
               
               <button type="button" onclick="calcInsert('sin(')">sin</button>
@@ -263,10 +263,12 @@
               <button type="button" onclick="calcInsert('3')">3</button>
               <button type="button" onclick="calcInsert('+')">+</button>
 
+              <button type="button" onclick="calcInsert('x')">x</button>
               <button type="button" onclick="calcInsert('0')" class="zero">0</button>
               <button type="button" onclick="calcInsert('.')">.</button>
               <button type="button" onclick="calcHitung()" class="btn-sama-dengan">=</button>
-            </div>
+                        </div>
+            
           </div>
 
         </div>
