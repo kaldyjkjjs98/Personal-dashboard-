@@ -19,9 +19,12 @@
         <p>PERSONAL DASHBOARD</p>
       </div>
 
-      <div class="status">
-        <span></span>
-        SYSTEM ONLINE
+      <div class="header-right">
+        <div class="status">
+          <span></span>
+          SYSTEM ONLINE
+        </div>
+        <button id="theme-toggle" type="button" class="btn-theme" title="Ganti Tema">☀️</button>
       </div>
     </header>
 
@@ -212,6 +215,63 @@
 
       </section>
 
+      <section class="notes">
+        <div class="section-heading">
+          <div>
+            <span class="section-number">03 / TOOLS</span>
+            <h2>
+              <button id="buka-tools" type="button">
+                Kalkulator <span>+</span>
+              </button>
+            </h2>
+          </div>
+        </div>
+
+        <div class="panel" id="panel-tools" hidden>
+          <button class="tutup-panel" id="tutup-tools" type="button">×</button>
+
+          <div class="tools-box">
+            <h3>Kalkulator & Variabel</h3>
+            
+            <input type="text" id="calc-input-field" placeholder="Contoh: 2x + 5 > 15 atau sin(30)" autocomplete="off">
+            
+            <div class="calc-screen" id="calc-display">0</div>
+            
+            <div class="calc-buttons calc-grid-advanced">
+              <button type="button" onclick="calcClear()">C</button>
+              <button type="button" onclick="calcInsert('x')">x</button>
+              <button type="button" onclick="calcInsert('y')">y</button>
+              <button type="button" onclick="calcInsert('÷')">÷</button>
+              
+              <button type="button" onclick="calcInsert('sin(')">sin</button>
+              <button type="button" onclick="calcInsert('cos(')">cos</button>
+              <button type="button" onclick="calcInsert('<')">&lt;</button>
+              <button type="button" onclick="calcInsert('>')">&gt;</button>
+
+              <button type="button" onclick="calcInsert('7')">7</button>
+              <button type="button" onclick="calcInsert('8')">8</button>
+              <button type="button" onclick="calcInsert('9')">9</button>
+              <button type="button" onclick="calcInsert('×')">×</button>
+
+              <button type="button" onclick="calcInsert('4')">4</button>
+              <button type="button" onclick="calcInsert('5')">5</button>
+              <button type="button" onclick="calcInsert('6')">6</button>
+              <button type="button" onclick="calcInsert('-')">-</button>
+
+              <button type="button" onclick="calcInsert('1')">1</button>
+              <button type="button" onclick="calcInsert('2')">2</button>
+              <button type="button" onclick="calcInsert('3')">3</button>
+              <button type="button" onclick="calcInsert('+')">+</button>
+
+              <button type="button" onclick="calcInsert('0')" class="zero">0</button>
+              <button type="button" onclick="calcInsert('.')">.</button>
+              <button type="button" onclick="calcHitung()" class="btn-sama-dengan">=</button>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
     </main>
 
     <footer>
@@ -226,7 +286,6 @@
     <img id="foto-fullscreen-img" src="" alt="Foto catatan">
   </div>
 
-  <!-- KOTAK MODAL KUSTOM (PENGGANTI ALERT/CONFIRM) -->
   <div id="custom-modal" class="custom-modal-overlay">
     <div class="custom-modal-box">
       <h3 id="custom-modal-title">Pemberitahuan</h3>
@@ -238,5 +297,5 @@
   <script src="dashboard.js"></script>
 
 </body>
-  </html>
-                             
+        </html>
+  
