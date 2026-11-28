@@ -667,20 +667,24 @@ if (themeToggleBtn) {
 }
 
 // ==========================================
-// 8. FITUR KALKULATOR & VARIABEL (DIOPTIMALKAN)
+// 8. FITUR KALKULATOR & VARIABEL (DISEMPURNAKAN)
 // ==========================================
 const calcInputField = document.getElementById("calc-input-field");
 const calcDisplay = document.getElementById("calc-display");
 
+// Agar keyboard HP tidak muncul saat diklik, tapi tetap bisa ditekan tombol kalkulatornya
+if (calcInputField) {
+  calcInputField.setAttribute("readonly", "true");
+}
+
 function calcInsert(val) {
   if (!calcInputField) return;
-  const start = calcInputField.selectionStart;
-  const end = calcInputField.selectionEnd;
-  const text = calcInputField.value;
-
-  calcInputField.value = text.substring(0, start) + val + text.substring(end);
-  calcInputField.selectionStart = calcInputField.selectionEnd = start + val.length;
-  calcInputField.focus();
+  // Jika nilai awal masih kosong atau '0', Timpa. Jika tidak, tambahkan.
+  if (calcInputField.value === "" || calcInputField.value === "0") {
+    calcInputField.value = val;
+  } else {
+    calcInputField.value += val;
+  }
 }
 
 function calcClear() {
@@ -695,20 +699,26 @@ window.calcHitung = function() {
   if (!ekspresi) return;
 
   try {
+    // Jika mengandung tanda pertidaksamaan, tampilkan sebagai info ekspresi
     if (ekspresi.includes("<") || ekspresi.includes(">")) {
-      calcDisplay.textContent = "Mode Pertidaksamaan Aktif";
+      calcDisplay.textContent = ekspresi;
       return;
     }
 
-    if (/[xy]/.test(ekspresi)) {
-      calcDisplay.textContent = `Bentuk Variabel: ${ekspresi}`;
-      return;
-    }
-
+    // Ganti simbol visual dengan operator hitung JavaScript
     let proses = ekspresi
       .replace(/÷/g, "/")
       .replace(/×/g, "*");
 
+    // Jika ada variabel x atau y dan ingin dihitung, ganti atau biarkan. 
+    // Di sini kita evaluasi matematika dasarnya terlebih dahulu jika berupa angka murni,
+    // atau biarkan tampil sebagai bentuk aljabar jika mengandung huruf.
+    if (/[xy]/.test(proses)) {
+      calcDisplay.textContent = proses;
+      return;
+    }
+
+    // Evaluasi fungsi trigonometri jika ada
     proses = proses.replace(/sin\(([^)]+)\)/g, (match, p1) => {
       let rad = (parseFloat(p1) * Math.PI) / 180;
       return Math.sin(rad);
@@ -731,12 +741,4 @@ window.calcHitung = function() {
     calcDisplay.textContent = "Format Error";
   }
 };
-
-if (calcInputField) {
-  calcInputField.addEventListener("keydown", function(e) {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      calcHitung();
-    }
-  });
-      }
+      
